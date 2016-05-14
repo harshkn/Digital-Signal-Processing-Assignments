@@ -1,0 +1,41 @@
+x = load('group9_stationary.mat');
+x = x.x;
+
+d=0.17; fs=16E3; v=343; x1=x(:,1); x2=x(:,2);
+% soundsc(x1);
+% specgramdemo(x1);
+L=512;
+pos=230000;
+s1=x1(pos:pos+L-1);
+s2=x2(pos:pos+L-1);
+nmax=floor(d/v*fs);
+[r lags]=xcorr(s1,s2,nmax);
+figure(1);
+plot(lags,r);
+title('Correlation of two microphones'); 
+xlabel('Time lag'); ylabel('Magnitude');
+[m, pos]=max(r);
+lag=lags(pos);
+theta = asin(-lag*v/fs/d);
+disp(theta);
+
+
+x = load('rec_white.mat');
+x = x.x;
+x1=x(:,1);x2=x(:,2);
+d=0.26;
+L=512;
+pos=1;
+s1=x1(pos:pos+L-1);
+s2=x2(pos:pos+L-1);
+nmax=floor(d/v*fs);
+[r, lags]=xcorr(s1,s2,nmax);
+figure(2);
+plot(lags,r);
+[m ,pos]=max(r);
+lag=lags(pos);
+theta=asin(-lag*v/fs/d) ;
+disp(theta);
+title('Correlation of two microphones'); 
+xlabel('Time lag');
+ylabel('Magnitude');

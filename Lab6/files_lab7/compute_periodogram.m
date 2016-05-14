@@ -1,0 +1,40 @@
+function [] = compute_periodogram(y,t,title1)
+
+t1=t;
+x1=y;
+x1=detrend(x1);
+fs=100;
+Wn=40/(fs/2);
+figure
+N=30;
+[b,a]=butter(N,Wn);
+x1_process=filter(b,a,x1);
+subplot(3,1,1); 
+ya = x1_process(find(t1<10 & t1>7));
+xa = t1(find(t1<10&t1>7))-7;
+plot(xa ,ya,'r'); 
+title(title1);
+xlabel('Second');
+ylabel('Millivolt'); 
+x1=x1_process(1:6*floor(length(x1_process)/6));
+N=length(x1);
+L=1;
+M=N/L;
+window=rectwin(M);
+[C1 ,w1]=spec1(x1.',window.',L);
+subplot(3,1,2);
+plot(w1/2/pi*fs,C1);
+xlim([0 50]);
+title('Periodogram');
+xlabel('Hz');
+ylabel('Power density');
+N=length(x1);
+L=6;
+M=N/L;
+window=rectwin(M);
+[C1, w1]=spec1(x1.',window.',L);
+subplot(3,1,3);
+plot(w1/2/pi*fs,C1);
+title('Averaged Periodogram with L=6');
+xlabel('Hz');
+ylabel('Power density');

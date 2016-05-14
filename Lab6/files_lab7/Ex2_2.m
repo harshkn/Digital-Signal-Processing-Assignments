@@ -1,0 +1,14 @@
+clc;
+clear all;
+close all;
+load ar7.mat;
+N=length(X);
+m=15;
+L=1;
+M=N/L;
+window=rectwin(M);
+[C w]=spec2(X,window,L,m);
+plot(w,C);
+title('Smoothed Periodogram with m=15');
+xlabel('Normalized frequency \omega/rad');
+ylabel('Power density');
